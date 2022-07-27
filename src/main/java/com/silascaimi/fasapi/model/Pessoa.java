@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "pessoa")
@@ -18,6 +19,7 @@ public class Pessoa {
 	private Long codigo;
 	
 	@NotNull
+	@Size(max = 50, message = "{validation.maxSize}")
 	private String nome;
 	
 	@NotNull
