@@ -72,17 +72,9 @@ public class FASExceptionHandler extends ResponseEntityExceptionHandler {
 			return mensagemUsuario;
 		}
 
-		public void setMensagemUsuario(String mensagemUsuario) {
-			this.mensagemUsuario = mensagemUsuario;
-		}
-
 		public String getMensagemDesenvolvedor() {
 			return mensagemDesenvolvedor;
 		}
-
-		public void setMensagemDesenvolvedor(String mensagemDesenvolvedor) {
-			this.mensagemDesenvolvedor = mensagemDesenvolvedor;
-		}
-
+		
 	}
 }
