@@ -1,13 +1,13 @@
 package com.silascaimi.fasapi.resource;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,7 +31,7 @@ public class PessoaResource {
 
 	@Autowired
 	private PessoaRepository pessoaRepository;
-	
+
 	@Autowired
 	private PessoaService pessoaService;
 
@@ -54,12 +54,15 @@ public class PessoaResource {
 
 	@GetMapping("/{codigo}")
 	public ResponseEntity<Pessoa> buscarPeloCodigo(@PathVariable Long codigo) {
-		Optional<Pessoa> pessoa = pessoaRepository.findById(codigo);
+//		Optional<Pessoa> pessoa = pessoaRepository.findById(codigo);
+//
+//		if (pessoa.isPresent()) {
+//			return ResponseEntity.ok(pessoa.get());
+//		}
+//		return ResponseEntity.notFound().build();
 
-		if (pessoa.isPresent()) {
-			return ResponseEntity.ok(pessoa.get());
-		}
-		return ResponseEntity.notFound().build();
+		Pessoa pessoa = pessoaRepository.findById(codigo).orElseThrow(() -> new EmptyResultDataAccessException(1));
+		return ResponseEntity.ok(pessoa);
 	}
 
 	@DeleteMapping("/{codigo}")
@@ -74,7 +77,7 @@ public class PessoaResource {
 
 		return ResponseEntity.ok(pessoaSalva);
 	}
-	
+
 	@PutMapping("/{codigo}/ativo")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void atualizarPropriedadeAtivo(@PathVariable Long codigo, @RequestBody Boolean ativo) {
