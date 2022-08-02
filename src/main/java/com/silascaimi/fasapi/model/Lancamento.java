@@ -28,9 +28,11 @@ public class Lancamento {
 	private String descricao;
 
 	@Column(name = "data_vencimento")
+	//@JsonFormat(pattern = "yyyy/MM/dd") formatando saída LocalDate no json
 	private LocalDate dataVencimento;
 
 	@Column(name = "data_pagamento")
+	//@JsonFormat(pattern = "yyyy/MM/dd")
 	private LocalDate dataPagamento;
 
 	@NotNull
