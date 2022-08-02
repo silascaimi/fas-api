@@ -12,12 +12,15 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.silascaimi.fasapi.validation.Group;
+
 @Entity
 @Table(name = "pessoa")
 public class Pessoa {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@NotNull(groups = Group.Id.class)
 	private Long codigo;
 	
 	@NotNull

@@ -58,6 +58,8 @@ public class Lancamento {
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "codigo_pessoa")
+	@Valid
+	@ConvertGroup(from = Default.class, to = Group.Id.class)
 	private Pessoa pessoa;
 
 	public Long getCodigo() {
