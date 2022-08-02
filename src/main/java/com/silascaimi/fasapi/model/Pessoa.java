@@ -8,10 +8,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.silascaimi.fasapi.validation.Group;
 
 @Entity
@@ -52,6 +54,12 @@ public class Pessoa {
 
 	public Boolean isAtivo() {
 		return ativo;
+	}
+	
+	@JsonIgnore // Faz o Jackson ignorar na serialização do json
+	@Transient // Faz o hibernate ignorar propriedade
+	public Boolean isInativo() {
+		return !ativo;
 	}
 
 	public void setAtivo(Boolean ativo) {
