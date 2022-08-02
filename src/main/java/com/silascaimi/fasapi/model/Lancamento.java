@@ -14,7 +14,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
+
+import com.silascaimi.fasapi.validation.Group;
 
 @Entity
 @Table(name = "lancamento")
@@ -46,6 +51,8 @@ public class Lancamento {
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "codigo_categoria")
+	@Valid
+	@ConvertGroup(from = Default.class, to = Group.Id.class)
 	private Categoria categoria;
 
 	@NotNull

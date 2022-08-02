@@ -10,12 +10,15 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.silascaimi.fasapi.validation.Group;
+
 @Entity
 @Table(name = "categoria")
 public class Categoria {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@NotNull(groups = Group.Id.class)
 	private Long codigo;
 
 	@NotNull
