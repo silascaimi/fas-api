@@ -1,5 +1,6 @@
 package com.silascaimi.fasapi.model;
 
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Embedded;
@@ -7,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.Valid;
@@ -35,6 +37,10 @@ public class Pessoa {
 	@Valid
 	@Embedded
 	private Endereco endereco;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "pessoa")
+	private List<Lancamento> lancamentos;
 
 	public Long getCodigo() {
 		return codigo;
@@ -72,6 +78,14 @@ public class Pessoa {
 
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
+	}
+	
+	public List<Lancamento> getLancamentos() {
+		return lancamentos;
+	}
+
+	public void setLancamentos(List<Lancamento> lancamentos) {
+		this.lancamentos = lancamentos;
 	}
 
 	@Override
