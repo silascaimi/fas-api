@@ -25,6 +25,7 @@ import com.silascaimi.fasapi.event.RecursoCriadoEvent;
 import com.silascaimi.fasapi.exceptionhandler.FASExceptionHandler.Erro;
 import com.silascaimi.fasapi.model.Lancamento;
 import com.silascaimi.fasapi.repository.LancamentoRepository;
+import com.silascaimi.fasapi.repository.filter.LancamentoFilter;
 import com.silascaimi.fasapi.service.LancamentoService;
 import com.silascaimi.fasapi.service.exception.PessoaInexistenteOuInativaException;
 
@@ -45,8 +46,8 @@ public class LancamentoResource {
 	private MessageSource messageSource;
 
 	@GetMapping
-	public List<Lancamento> listar() {
-		return lancamentoRepository.findAll();
+	public List<Lancamento> pesquisar(LancamentoFilter lancamentoFilter) {
+		return lancamentoRepository.filtrar(lancamentoFilter);
 	}
 	
 	@GetMapping("/{codigo}")
@@ -54,7 +55,7 @@ public class LancamentoResource {
 		Lancamento lancamento = lancamentoRepository.findById(codigo).orElseThrow(() -> new EmptyResultDataAccessException(1));
 		return ResponseEntity.ok(lancamento);
 	}
-	
+
 	@PostMapping
 	public ResponseEntity<Lancamento> criar(@Valid @RequestBody Lancamento lancamento, HttpServletResponse response) {
 		Lancamento lancamentoSalvo = lancamentoService.salvar(lancamento);
