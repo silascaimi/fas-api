@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.silascaimi.fasapi.event.RecursoCriadoEvent;
 import com.silascaimi.fasapi.model.Categoria;
 import com.silascaimi.fasapi.repository.CategoriaRepository;
+import com.silascaimi.fasapi.repository.filter.CategoriaFilter;
 
 @RestController
 @RequestMapping("/categorias")
@@ -32,8 +33,8 @@ public class CategoriaResource {
 	private ApplicationEventPublisher publisher;
 
 	@GetMapping
-	public List<Categoria> listar() {
-		return categoriaRepository.findAll();
+	public List<Categoria> pesquisar(CategoriaFilter categoriaFilter) {
+		return categoriaRepository.pesquisar(categoriaFilter);
 	}
 
 	@PostMapping
