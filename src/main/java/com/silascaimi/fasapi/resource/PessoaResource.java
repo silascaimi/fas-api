@@ -1,6 +1,5 @@
 package com.silascaimi.fasapi.resource;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -9,6 +8,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,8 +42,8 @@ public class PessoaResource {
 	private ApplicationEventPublisher publisher;
 
 	@GetMapping
-	public List<Pessoa> listar() {
-		return pessoaRepository.findAll();
+	public Page<Pessoa> listar(Pageable pageable) {
+		return pessoaRepository.findAll(pageable);
 	}
 
 	@PostMapping
