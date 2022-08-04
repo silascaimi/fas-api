@@ -9,6 +9,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -31,6 +32,8 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 		CriteriaQuery<Lancamento> criteria = builder.createQuery(Lancamento.class);
 
 		Root<Lancamento> root = criteria.from(Lancamento.class);
+		root.fetch(Lancamento_.categoria, JoinType.LEFT);
+		root.fetch(Lancamento_.pessoa, JoinType.LEFT);
 
 		Predicate[] predicates = criarRestricoes(lancamentoFilter, builder, root);
 		criteria.where(predicates);
