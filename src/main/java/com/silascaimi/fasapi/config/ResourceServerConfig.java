@@ -56,6 +56,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter{
                 .exceptionHandling().authenticationEntryPoint((request, response, exception) -> { 
         			this.handlerExceptionResolver.resolveException(request, response, null, exception);
         		}).and()
+                .cors().and() // add CorsFilter which in turn bypasses the authorization checks for OPTIONS requests
                 .oauth2ResourceServer()
                 .jwt().jwtAuthenticationConverter(jwtAuthenticationConverter());
     }
