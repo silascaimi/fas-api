@@ -1,4 +1,4 @@
-package com.silascaimi.fasapi.api.config;
+package com.silascaimi.fasapi.config;
 
 import java.util.Collection;
 import java.util.Collections;

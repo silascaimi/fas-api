@@ -1,4 +1,4 @@
-package com.silascaimi.fasapi.api.config;
+package com.silascaimi.fasapi.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
