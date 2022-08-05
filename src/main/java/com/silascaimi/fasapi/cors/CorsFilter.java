@@ -14,13 +14,13 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-@Component
-@Order(Ordered.HIGHEST_PRECEDENCE)
-public class CorsFilter implements Filter {
+//@Component
+//@Order(Ordered.HIGHEST_PRECEDENCE)
+public class CorsFilter {//implements Filter {
 
 	private String origemPermitida = "http://localhost:8000"; // TODO configurar para vários ambientes
 	
-	@Override
+	//@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		

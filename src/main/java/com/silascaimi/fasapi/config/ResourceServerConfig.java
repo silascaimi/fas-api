@@ -1,5 +1,6 @@
 package com.silascaimi.fasapi.config;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -25,6 +26,10 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @SuppressWarnings("deprecation")
@@ -56,7 +61,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter{
                 .exceptionHandling().authenticationEntryPoint((request, response, exception) -> { 
         			this.handlerExceptionResolver.resolveException(request, response, null, exception);
         		}).and()
-                //.cors().and() // add CorsFilter which in turn bypasses the authorization checks for OPTIONS requests
+                .cors().and() // add CorsFilter which in turn bypasses the authorization checks for OPTIONS requests
                 .oauth2ResourceServer()
                 .jwt().jwtAuthenticationConverter(jwtAuthenticationConverter());
     }
@@ -107,4 +112,19 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter{
     public UserDetailsService userDetailsServiceBean() throws Exception {
        return super.userDetailsServiceBean();
     }
+    
+    @Bean
+	public CorsFilter corsFilter() {
+		CorsConfiguration config = new CorsConfiguration();
+		config.setAllowCredentials(true);
+		config.addAllowedHeader("*");
+		config.addAllowedMethod("*");
+		config.setMaxAge(3600L);
+		config.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://localhost:4100"));
+		
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", config);
+		
+		return new CorsFilter(source);
+	}
 }
