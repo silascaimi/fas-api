@@ -1,4 +1,4 @@
-package com.silascaimi.fasapi.token;
+package com.silascaimi.fasapi.config.token;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;

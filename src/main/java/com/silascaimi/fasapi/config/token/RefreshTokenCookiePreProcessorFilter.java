@@ -1,4 +1,4 @@
-package com.silascaimi.fasapi.token;
+package com.silascaimi.fasapi.config.token;
 
 import java.io.IOException;
 import java.util.Map;
