@@ -20,7 +20,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
@@ -39,12 +39,12 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter{
 	@Autowired
 	private HandlerExceptionResolver handlerExceptionResolver;
 	
+	@Autowired
+	private UserDetailsService userDetailsService;
+	
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("admin")
-                .password("admin")
-                .roles("ADMIN");
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Override
@@ -103,13 +103,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter{
 
     @Bean
     PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
-    }
-    
-    @Bean
-    @Override
-    public UserDetailsService userDetailsServiceBean() throws Exception {
-       return super.userDetailsServiceBean();
+    	return new BCryptPasswordEncoder();
     }
     
     @Bean
