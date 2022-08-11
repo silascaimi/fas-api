@@ -32,6 +32,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
+import com.silascaimi.fasapi.config.property.FASProperty;
+
 @SuppressWarnings("deprecation")
 @Configuration
 @EnableWebSecurity
@@ -43,6 +45,9 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
 	private UserDetailsService userDetailsService;
+	
+	@Autowired
+	private FASProperty fasProperty;
 	
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -115,8 +120,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter{
 		config.addAllowedHeader("*");
 		config.addAllowedMethod("*");
 		config.setMaxAge(3600L);
-		config.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://localhost:4100"));
-		
+		config.setAllowedOrigins(fasProperty.getOrigensPermitidas());
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", config);
 		
