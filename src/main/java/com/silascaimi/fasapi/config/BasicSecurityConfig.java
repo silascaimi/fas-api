@@ -11,6 +11,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @Profile("basic-security")
 @EnableWebSecurity
@@ -18,6 +19,9 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private UserDetailsService userDetailsService;
+	
+	@Autowired
+	private HandlerExceptionResolver handlerExceptionResolver;
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -38,7 +42,10 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
-			.csrf().disable();
+			.csrf().disable()
+			.exceptionHandling().authenticationEntryPoint((request, response, exception) -> { 
+    			this.handlerExceptionResolver.resolveException(request, response, null, exception);
+    		});
 	}
 
 }
