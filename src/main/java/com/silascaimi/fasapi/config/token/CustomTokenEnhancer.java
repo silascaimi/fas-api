@@ -1,4 +1,4 @@
-package com.silascaimi.fasapi.config;
+package com.silascaimi.fasapi.config.token;
 
 import java.util.HashMap;
 import java.util.Map;
