@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,8 +43,8 @@ public class PessoaResource {
 	private ApplicationEventPublisher publisher;
 
 	@GetMapping
-	public Page<Pessoa> listar(Pageable pageable) {
-		return pessoaRepository.findAll(pageable);
+	public Page<Pessoa> pesquisar(@RequestParam(required = false, defaultValue = "") String nome, Pageable pageable) {
+		return pessoaRepository.findByNomeContaining(nome, pageable);
 	}
 
 	@PostMapping
