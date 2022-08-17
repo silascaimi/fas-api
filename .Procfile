@@ -1,1 +1,1 @@
-web: java -Dserver.port=80 -jar target/fas-api-1.0.0-SNAPSHOT.jar
+web: java -Dserver.port=$PORT -Dspring.profiles.active=prod,oauth-security $JAVA_OPTS -jar target/fas-api-1.0.0-SNAPSHOT.jar
