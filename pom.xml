@@ -113,10 +113,18 @@
 		    <scope>provided</scope>
 		</dependency>
 		
+		<!-- Biblioteca para trabalhar com spring profiles -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
+		</dependency>
+		
+		<!-- Biblioteca para retorno em xml -->
+		<!-- necessário incluir no header da requisicao Accept=text/xml -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-xml</artifactId>
 		</dependency>
 	</dependencies>
 
