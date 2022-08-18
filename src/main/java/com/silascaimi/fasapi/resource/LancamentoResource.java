@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.silascaimi.fasapi.dto.LancamentoEstatisticaCategoria;
+import com.silascaimi.fasapi.dto.LancamentoEstatisticaDia;
 import com.silascaimi.fasapi.event.RecursoCriadoEvent;
 import com.silascaimi.fasapi.exceptionhandler.FASExceptionHandler.Erro;
 import com.silascaimi.fasapi.model.Lancamento;
@@ -66,6 +67,11 @@ public class LancamentoResource {
 	@GetMapping("/estatisticas/por-categoria")
 	public ResponseEntity<List<LancamentoEstatisticaCategoria>> porCategoria() {
 		return ResponseEntity.ok(lancamentoRepository.porCategoria(LocalDate.now()));
+	}
+	
+	@GetMapping("/estatisticas/por-dia")
+	public List<LancamentoEstatisticaDia> porDia() {
+		return this.lancamentoRepository.porDia(LocalDate.now());
 	}
 
 	@PostMapping

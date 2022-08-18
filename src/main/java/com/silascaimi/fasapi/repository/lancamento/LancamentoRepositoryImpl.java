@@ -21,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.util.ObjectUtils;
 
 import com.silascaimi.fasapi.dto.LancamentoEstatisticaCategoria;
+import com.silascaimi.fasapi.dto.LancamentoEstatisticaDia;
 import com.silascaimi.fasapi.model.Lancamento;
 import com.silascaimi.fasapi.model.Lancamento_;
 import com.silascaimi.fasapi.model.Pessoa;
@@ -128,6 +129,42 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 		query.orderBy(order);
 		
 		TypedQuery<LancamentoEstatisticaCategoria> typedQuery = manager.createQuery(query);
+		
+		return typedQuery.getResultList();
+	}
+
+	@Override
+	public List<LancamentoEstatisticaDia> porDia(LocalDate mesReferencia) {
+		CriteriaBuilder builder = manager.getCriteriaBuilder();
+		
+		CriteriaQuery<LancamentoEstatisticaDia> query = builder.createQuery(LancamentoEstatisticaDia.class);
+		
+		Root<Lancamento> root = query.from(Lancamento.class);
+		
+		query.select(builder.construct(LancamentoEstatisticaDia.class, 
+				root.get(Lancamento_.tipo),
+				root.get(Lancamento_.dataVencimento),
+				builder.sum(root.get(Lancamento_.valor))
+			));
+		
+		LocalDate primeiroDia = mesReferencia.withDayOfMonth(1);
+		LocalDate ultimoDia = mesReferencia.withDayOfMonth(mesReferencia.lengthOfMonth());
+		
+		query.where(
+				builder.greaterThanOrEqualTo(root.get(Lancamento_.dataVencimento), primeiroDia),
+				builder.lessThanOrEqualTo(root.get(Lancamento_.dataVencimento), ultimoDia),
+				builder.equal(root.get(Lancamento_.tipo), TipoLancamento.DESPESA)
+			);
+		
+		query.groupBy(
+				root.get(Lancamento_.tipo),
+				root.get(Lancamento_.dataVencimento)
+			);
+		
+		Order order = builder.desc(builder.sum(root.get(Lancamento_.valor)));
+		query.orderBy(order);
+		
+		TypedQuery<LancamentoEstatisticaDia> typedQuery = manager.createQuery(query);
 		
 		return typedQuery.getResultList();
 	}
