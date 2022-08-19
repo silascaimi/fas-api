@@ -22,6 +22,7 @@ import org.springframework.util.ObjectUtils;
 
 import com.silascaimi.fasapi.dto.LancamentoEstatisticaCategoria;
 import com.silascaimi.fasapi.dto.LancamentoEstatisticaDia;
+import com.silascaimi.fasapi.dto.LancamentoEstatisticaPessoa;
 import com.silascaimi.fasapi.model.Lancamento;
 import com.silascaimi.fasapi.model.Lancamento_;
 import com.silascaimi.fasapi.model.Pessoa;
@@ -165,6 +166,38 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 		query.orderBy(order);
 		
 		TypedQuery<LancamentoEstatisticaDia> typedQuery = manager.createQuery(query);
+		
+		return typedQuery.getResultList();
+	}
+
+	@Override
+	public List<LancamentoEstatisticaPessoa> porPessoa(LocalDate inicio, LocalDate fim) {
+		CriteriaBuilder builder = manager.getCriteriaBuilder();
+		
+		CriteriaQuery<LancamentoEstatisticaPessoa> query = builder.createQuery(LancamentoEstatisticaPessoa.class);
+		
+		Root<Lancamento> root = query.from(Lancamento.class);
+		
+		query.select(builder.construct(LancamentoEstatisticaPessoa.class,
+				root.get(Lancamento_.tipo),
+				root.get(Lancamento_.pessoa),
+				builder.sum(root.get(Lancamento_.valor))
+			));
+		
+		query.where(
+				builder.greaterThanOrEqualTo(root.get(Lancamento_.dataVencimento), inicio),
+				builder.lessThanOrEqualTo(root.get(Lancamento_.dataVencimento), fim)
+			);
+		
+		query.groupBy(
+				root.get(Lancamento_.tipo),
+				root.get(Lancamento_.pessoa)
+			);
+		
+		Order order = builder.desc(builder.sum(root.get(Lancamento_.valor)));
+		query.orderBy(order);
+		
+		TypedQuery<LancamentoEstatisticaPessoa> typedQuery = manager.createQuery(query);
 		
 		return typedQuery.getResultList();
 	}
