@@ -19,6 +19,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.silascaimi.fasapi.validation.Group;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Entity
 @Table(name = "pessoa")
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -67,6 +70,7 @@ public class Pessoa {
 	@JsonIgnore // Faz o Jackson ignorar na serialização do json
 	@Transient // Faz o hibernate ignorar propriedade
 	public Boolean isInativo() {
+		log.info("Status {}", ativo);
 		return !ativo;
 	}
 
