@@ -14,7 +14,10 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,6 +40,8 @@ import com.silascaimi.fasapi.repository.LancamentoRepository;
 import com.silascaimi.fasapi.repository.filter.LancamentoFilter;
 import com.silascaimi.fasapi.service.LancamentoService;
 import com.silascaimi.fasapi.service.exception.PessoaInexistenteOuInativaException;
+
+import net.sf.jasperreports.engine.JRException;
 
 @RestController
 @RequestMapping("/lancamentos")
@@ -72,6 +78,21 @@ public class LancamentoResource {
 	@GetMapping("/estatisticas/por-dia")
 	public List<LancamentoEstatisticaDia> porDia() {
 		return this.lancamentoRepository.porDia(LocalDate.now());
+	}
+	
+	@GetMapping("relatorio/por-pessoa")
+	public ResponseEntity<byte[]> relatorioPorPessoa(
+			@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate inicio,
+			@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fim) throws JRException {
+		byte[] relatorio = lancamentoService.relatorioPorPessoa(inicio, fim);
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_PDF_VALUE);
+		headers.add("Content-Disposition", "attachment; filename=lancamento_por_pessoa.pdf");
+		
+		return ResponseEntity.ok()
+				.headers(headers)
+				.body(relatorio);
 	}
 
 	@PostMapping
