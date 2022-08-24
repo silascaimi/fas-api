@@ -59,7 +59,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter{
     public void configure(HttpSecurity http) throws Exception {
         
         http.authorizeRequests()
-                .antMatchers("/categorias").permitAll()
+                .antMatchers("/categorias", "/static/**").permitAll()
                 .anyRequest().authenticated()
             .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
