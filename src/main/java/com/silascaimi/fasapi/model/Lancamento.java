@@ -19,6 +19,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.silascaimi.fasapi.validation.Group;
 
 @Entity
@@ -61,6 +62,11 @@ public class Lancamento {
 	@Valid
 	@ConvertGroup(from = Default.class, to = Group.Id.class)
 	private Pessoa pessoa;
+	
+	@JsonIgnore
+	public boolean isReceita() {
+		return TipoLancamento.RECEITA.equals(tipo);
+	}
 
 	public Long getCodigo() {
 		return codigo;
