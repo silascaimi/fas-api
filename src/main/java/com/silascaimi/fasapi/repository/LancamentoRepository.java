@@ -1,5 +1,6 @@
 package com.silascaimi.fasapi.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,10 +13,12 @@ import com.silascaimi.fasapi.repository.lancamento.LancamentoRepositoryQuery;
 @Repository
 public interface LancamentoRepository extends JpaRepository<Lancamento, Long>, LancamentoRepositoryQuery {
 
-	 @Query("    select l " +
-	           "      from Lancamento l " +
-	           "join fetch l.categoria c " +
-	           "join fetch l.pessoa p ")
-	    List<Lancamento> findAll();
+	 @Query("select l " +
+           "      from Lancamento l " +
+           "join fetch l.categoria c " +
+           "join fetch l.pessoa p ")
+	 List<Lancamento> findAll();
+	 
+	 List<Lancamento> findByDataVencimentoLessThanEqualAndDataPagamentoIsNull(LocalDate data);
 	 
 }

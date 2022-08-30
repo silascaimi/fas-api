@@ -1,10 +1,12 @@
 package com.silascaimi.fasapi.mail;
 
+import java.util.HashMap;
 //import java.util.Arrays;
 //import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -17,6 +19,9 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+
+import com.silascaimi.fasapi.model.Lancamento;
+import com.silascaimi.fasapi.model.Usuario;
 
 //import com.silascaimi.fasapi.model.Lancamento;
 //import com.silascaimi.fasapi.repository.LancamentoRepository;
@@ -83,5 +88,19 @@ public class AppMailSender {
 		String mensagem = thymeleaf.process(template, context);
 		
 		this.enviarEmail(remetente, destinatarios, assunto, mensagem);
+	}
+	
+	public void avisarSobreLancamentosVencidos(List<Lancamento> vencidos, List<Usuario> destinatarios) {
+		Map<String, Object> variaveis = new HashMap<>();
+		variaveis.put("lancamento", vencidos);
+		
+		List<String> emails = destinatarios
+				.stream()
+				.map(u -> u.getEmail())
+				.collect(Collectors.toList());
+		
+		String template = "mail/aviso-lancamentos-vencidos";
+		
+		enviarEmail("remetente@email.com", emails, "Lançamentos Vencidos", template, variaveis);
 	}
 }
