@@ -3,6 +3,7 @@ package com.silascaimi.fasapi.model;
 import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,6 +16,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.silascaimi.fasapi.validation.Group;
 
@@ -46,6 +48,11 @@ public class Pessoa {
 	@OneToMany(mappedBy = "pessoa")
 	private List<Lancamento> lancamentos;
 
+	@JsonIgnoreProperties("pessoa") // ignora a propriedade pessoa dentro de contato e evita stackoverflow
+	@Valid
+	@OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL) // alteraçoes em pessoa refletem em contatos
+	private List<Contato> contatos;
+
 	public Long getCodigo() {
 		return codigo;
 	}
@@ -65,9 +72,10 @@ public class Pessoa {
 	public Boolean isAtivo() {
 		return ativo;
 	}
-	
+
 	@JsonIgnore // Faz o Jackson ignorar na serialização do json
-	//@Transient // Faz o hibernate ignorar propriedade quando usado mapeamento Property Access Mode (pelos getters)
+	// @Transient // Faz o hibernate ignorar propriedade quando usado mapeamento
+	// Property Access Mode (pelos getters)
 	public Boolean isInativo() {
 		log.info("Status {}", ativo);
 		return !ativo;
@@ -84,13 +92,21 @@ public class Pessoa {
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
-	
+
 	public List<Lancamento> getLancamentos() {
 		return lancamentos;
 	}
 
 	public void setLancamentos(List<Lancamento> lancamentos) {
 		this.lancamentos = lancamentos;
+	}
+
+	public List<Contato> getContatos() {
+		return contatos;
+	}
+
+	public void setContatos(List<Contato> contatos) {
+		this.contatos = contatos;
 	}
 
 	@Override
