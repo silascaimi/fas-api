@@ -1,5 +1,9 @@
 package com.silascaimi.fasapi.resource;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -30,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.silascaimi.fasapi.dto.LancamentoEstatisticaCategoria;
 import com.silascaimi.fasapi.dto.LancamentoEstatisticaDia;
@@ -100,6 +105,14 @@ public class LancamentoResource {
 		Lancamento lancamentoSalvo = lancamentoService.salvar(lancamento);
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, lancamento.getCodigo()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(lancamentoSalvo);
+	}
+
+	@PostMapping("/anexo")
+	public String uploadArquivo(@RequestParam MultipartFile anexo) throws IOException {
+		OutputStream out = new FileOutputStream("/home/cemig/Desktop/anexo" + anexo.getOriginalFilename());
+		out.write(anexo.getBytes());
+		out.close();
+		return "ok";
 	}
 	
 	@PutMapping("/{codigo}")
