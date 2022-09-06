@@ -20,6 +20,7 @@ import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.silascaimi.fasapi.validation.Group;
 
 @Entity
@@ -56,6 +57,7 @@ public class Lancamento {
 	@ConvertGroup(from = Default.class, to = Group.Id.class)
 	private Categoria categoria;
 
+	@JsonIgnoreProperties("contatos")
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "codigo_pessoa")
