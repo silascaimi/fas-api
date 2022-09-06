@@ -50,7 +50,8 @@ public class Pessoa {
 
 	@JsonIgnoreProperties("pessoa") // ignora a propriedade pessoa dentro de contato e evita stackoverflow
 	@Valid
-	@OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL) // alteraçoes em pessoa refletem em contatos
+	@OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, // alteraçoes em pessoa refletem em contatos
+			orphanRemoval = true) // tudo que tiver na base e não tiver na lista contida no corpo ao atualizar será removido
 	private List<Contato> contatos;
 
 	public Long getCodigo() {
