@@ -16,6 +16,7 @@ services:
 
   fas-api:
     image: fas-api
+    command: ["/wait-for-it.sh", "fas-mysql:3306", "-t", "30", "--", "java", "-jar", "fas-api.jar"]
     environment:
       DB_HOST: fas-mysql
     ports:
