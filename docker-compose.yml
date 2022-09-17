@@ -1,0 +1,26 @@
+version: "3.9"
+
+networks:
+  fas-network:
+    driver: bridge
+
+services:
+  fas-mysql:
+    image: mysql:8.0.29
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+    ports:
+      - "3306:3306"
+    networks:
+      - fas-network
+
+  fas-api:
+    image: fas-api
+    environment:
+      DB_HOST: fas-mysql
+    ports:
+      - "8080:8080"
+    networks:
+     - fas-network
+    depends_on:
+      - fas-mysql
