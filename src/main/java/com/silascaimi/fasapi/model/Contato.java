@@ -27,7 +27,6 @@ public class Contato {
 	@NotEmpty
 	private String telefone;
 
-	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "codigo_pessoa")
 	private Pessoa pessoa;
