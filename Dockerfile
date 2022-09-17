@@ -2,7 +2,9 @@ FROM openjdk:11-jre-slim
 
 WORKDIR /app
 
-COPY target/*.jar /app/fas-api.jar
+ARG JAR_FILE
+
+COPY target/${JAR_FILE} /app/fas-api.jar
 
 EXPOSE 8080
 
