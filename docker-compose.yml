@@ -19,9 +19,20 @@ services:
     command: ["/wait-for-it.sh", "fas-mysql:3306", "-t", "30", "--", "java", "-jar", "fas-api.jar"]
     environment:
       DB_HOST: fas-mysql
-    ports:
-      - "8080:8080"
+#    ports:
+#      - "8080:8080"
     networks:
      - fas-network
     depends_on:
       - fas-mysql
+      
+  fas-proxy:
+    build: ./nginx
+    image: fas-proxy
+    ports:
+      - "80:80"
+    networks:
+      - fas-network
+    depends_on:
+      - fas-api
+      
