@@ -75,7 +75,7 @@ public class FASExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
     @ExceptionHandler({AuthenticationException.class})
-    public ResponseEntity<Object> AuthenticationException(InsufficientAuthenticationException ex, HttpServletRequest request) {
+    public ResponseEntity<Object> authenticationException(InsufficientAuthenticationException ex, HttpServletRequest request) {
         String mensagemUsuario = messageSource.getMessage("seguranca.usuario-ou-senha-invalido", null, LocaleContextHolder.getLocale());
         String mensagemDesenvolvedor = Optional.ofNullable(ex.getCause()).orElse(ex).toString();
         List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
